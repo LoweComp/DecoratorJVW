@@ -56,4 +56,29 @@ class FestaDecoratorTest {
         String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, DJ LoweZera (%d horas)", HORAS_DJ_OUTSIDER);
         assertEquals(expectedDesc, festa.getDescricao());
     }
+
+    // TESTES EM DUPLA
+
+    @Test
+    void testeDupla_BandaEBuffet() {
+        IFesta festa = new BuffetPremiumDec(new BandaDec(new FestaBase(), HORAS_BANDA));
+
+        double custoBandaTotal = CUSTO_BANDA_HORA * HORAS_BANDA;
+        assertEquals(CUSTO_BASE + CUSTO_BUFFET + custoBandaTotal, festa.getCusto());
+
+        String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, Banda Sertaneja/Pagode (%d horas), Buffet Premium (Jantar Completo, Mesa de Frio & Aperitivos)", HORAS_BANDA);
+        assertEquals(expectedDesc, festa.getDescricao());
+    }
+
+    @Test
+    void testeDupla_OpenBarEDJOutsider() {
+        IFesta festa = new DJOutsiderDec(new OpenBarDec(new FestaBase()), HORAS_DJ_OUTSIDER);
+
+        double custoDJTotal = CUSTO_DJ_OUTSIDER_HORA * HORAS_DJ_OUTSIDER;
+        double custoEsperado = CUSTO_BASE + CUSTO_OPEN_BAR + custoDJTotal;
+        assertEquals(custoEsperado, festa.getCusto());
+
+        String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, Open Bar de bebidas alcoolicas, refrigerante, água e sucos, DJ LoweZera (%d horas)", HORAS_DJ_OUTSIDER);
+        assertEquals(expectedDesc, festa.getDescricao());
+    }
 }

@@ -1,10 +1,10 @@
 package com.DecoratorJVW;
 
-public class DJOutsiderDec extends ServicoExtraDecorator {
+public class BandaDec extends ServicoExtraDecorator {
     private int horasContratadas;
-    private static final double CUSTO_POR_HORA = 600.00;
+    private static final double CUSTO_POR_HORA = 400.00;
 
-    public DJOutsiderDec(IFesta festa, int horas) {
+    public BandaDec(IFesta festa, int horas) {
         super(festa);
         this.horasContratadas = horas;
     }
@@ -12,7 +12,7 @@ public class DJOutsiderDec extends ServicoExtraDecorator {
     @Override
     public String getDescricao() {
         return festaDecorada.getDescricao() +
-                String.format(", DJ LoweZera (%d horas)", horasContratadas);
+                String.format(", Banda Sertaneja/Pagode (%d horas)", horasContratadas);
     }
 
     @Override

@@ -14,6 +14,7 @@ class FestaDecoratorTest {
     private static final int HORAS_DJ_OUTSIDER = 2;
 
     // TESTES FESTA BASE + SERVIÇO INDIVIDUAL
+
     @Test
     void testeSolo_FestaBase() {
         IFesta festa = new FestaBase();
@@ -79,6 +80,39 @@ class FestaDecoratorTest {
         assertEquals(custoEsperado, festa.getCusto());
 
         String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, Open Bar de bebidas alcoolicas, refrigerante, água e sucos, DJ LoweZera (%d horas)", HORAS_DJ_OUTSIDER);
+        assertEquals(expectedDesc, festa.getDescricao());
+    }
+
+    // TESTES DE TRIO E MÁXIMA
+
+    @Test
+    void testeTrio_BandaBuffetEOpenBar() {
+        IFesta festa = new OpenBarDec(new BuffetPremiumDec(new BandaDec(new FestaBase(), HORAS_BANDA)));
+
+        double custoBandaTotal = CUSTO_BANDA_HORA * HORAS_BANDA;
+        double custoEsperado = CUSTO_BASE + custoBandaTotal + CUSTO_BUFFET + CUSTO_OPEN_BAR;
+        assertEquals(custoEsperado, festa.getCusto());
+
+        String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, Banda Sertaneja/Pagode (%d horas), Buffet Premium (Jantar Completo, Mesa de Frio & Aperitivos), Open Bar de bebidas alcoolicas, refrigerante, água e sucos", HORAS_BANDA);
+        assertEquals(expectedDesc, festa.getDescricao());
+    }
+
+    @Test
+    void testeCombinacaoMaxima() {
+        IFesta festa = new OpenBarDec(
+                new BuffetPremiumDec(
+                        new DJOutsiderDec(
+                                new BandaDec(new FestaBase(), HORAS_BANDA), HORAS_DJ_OUTSIDER
+                        )
+                )
+        );
+
+        double custoBandaTotal = CUSTO_BANDA_HORA * HORAS_BANDA;
+        double custoDJTotal = CUSTO_DJ_OUTSIDER_HORA * HORAS_DJ_OUTSIDER;
+        double custoEsperado = CUSTO_BASE + custoBandaTotal + custoDJTotal + CUSTO_BUFFET + CUSTO_OPEN_BAR;
+        assertEquals(custoEsperado, festa.getCusto());
+
+        String expectedDesc = String.format("Festa Básica com DJ Residente, Segurança e Bar, Banda Sertaneja/Pagode (%d horas), DJ LoweZera (%d horas), Buffet Premium (Jantar Completo, Mesa de Frio & Aperitivos), Open Bar de bebidas alcoolicas, refrigerante, água e sucos", HORAS_BANDA, HORAS_DJ_OUTSIDER);
         assertEquals(expectedDesc, festa.getDescricao());
     }
 }
